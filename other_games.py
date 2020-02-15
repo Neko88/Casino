@@ -1,6 +1,6 @@
 import random
 
-def roulette(bet: str,number: int) -> bool:
+def roulette(bet: str, money: int, number = None) -> int:
   """
   Returns if the user's bet is correct in a simulation of roulette
   """
@@ -10,6 +10,7 @@ def roulette(bet: str,number: int) -> bool:
   column_one = [1,4,7,10,13,16,19,22,25,28,31,34]
   column_two = [2,5,8,11,14,17,20,23,26,29,32,35]
   column_three = [3,6,9,12,15,18,21,24,27,30,33,36] 
+  users = []
 
   #Roll and print outcome
   outcome = random.randint(0,37)  
@@ -21,77 +22,110 @@ def roulette(bet: str,number: int) -> bool:
 
   #Singles 35 - 1 
   if bet == "Single":
-    return number == outcome
+    if outcome == int(number):
+      return money * 35
+
+    else:
+      return -1 * money
+
+  #Splits 17 - 1
+  if "Split" in bet:
+    if "1" in bet:
+      users = [number, number + 1]
+
+    else:
+      users = [number, number + 3]
+
+    if outcome in users:
+      return money * 17
+  
+  #Street 11 - 1
+  if "Street" in bet:
+    users = [number*3, number*3-1, number*3-2]
+    if outcome in users:
+      return money * 11
+
+  #Square 8 - 1
+  if "Square" == bet:
+    users = [number, number+1, number+3, number+4]
+    if outcome in users:
+      return money * 8
+
+  #Six 5 - 1
+  if "Six" == bet:
+    for i in range(6):
+      users.append(number + i)
+
+    if outcome in users:
+      return money * 5
 
   #Colours 1 - 1
   elif bet == "Red":
-    return outcome in red
+    if outcome in red:
+      return money
 
   elif bet == "Black":
-    return outcome in black
-
+    if outcome in black:
+      return money
+  
   #Dozens 2 - 1
   elif bet == "Dozen 1":
-    return 1 < outcome >= 12
+    if 1 < outcome <= 12:
+      return money * 2
   
   elif bet == "Dozen 2":
-    return 13 <= outcome <= 24
-  
+    if 13 <= outcome <= 24:
+      return money * 2
+
   elif bet == "Dozen 3":
-    return 25 <= outcome < 37
-
-  #Highlow 1 - 1
-  elif bet == "First 18":
-    if outcome == 0 or outcome == 37:
-      return False
-
-    return outcome <= 18
+    if 25 <= outcome < 37:
+      return money * 2
   
-  elif bet == "Last 18":
-    if outcome == 0 or outcome == 37:
-      return False
+  #Highlow 1 - 1
+  elif bet == "1 - 18":
+    if outcome == 0 or outcome == 37 or outcome >= 19:
+      return money * -1
 
-    return outcome >= 19
+    return money
+  
+  elif bet == "19 - 36":
+    if outcome == 0 or outcome == 37 or outcome <= 18:
+      return money * -1
+
+    return money
 
   #Even/Odd 1 - 1
   elif bet == "Even":
-    if outcome == 0 or outcome == 37:
-      return False
+    if outcome == 0 or outcome == 37 or outcome % 2 == 1:
+      return money * -1
 
-    return outcome % 2 == 0
+    return money
 
   elif bet == "Odd":
-    if outcome == 0 or outcome == 37:
-      return False
-      
-    return outcome % 2 == 1
+    if outcome == 0 or outcome == 37 or outcome % 2 == 0:
+      return money * -1
+
+    return money 
   
   #Column 2 - 1
   elif bet == "Column 1":
-    return outcome in column_one
-  
+    if outcome in column_one:
+      return money * 2
+
   elif bet == "Column 2":
-    return outcome in column_two 
+    if outcome in column_two:
+      return money * 2
 
   elif bet == "Column 3":
-    return outcome in column_three
-
+    if outcome in column_three:
+      return money * 2
   
-  return False
+  return money * -1
 
-def high_low(guess: str) -> bool:
+def high_low(guess: str, bet: int) -> int:
   """
   Returns if guess is correct when comparing num and roll
 
-  >>> high_low("low")
-  roll = 10
-  True
-  >>> high_low("high")
-  roll = 90
-  False
-  >>> high_low("high")
-  roll = 50
-  False
   """
 
   #Creates and print outcome
@@ -99,33 +133,17 @@ def high_low(guess: str) -> bool:
   print ("You rolled a " + str(roll))
 
   #Check if user's guess is correct
-  if 50 > roll and guess == "high":
-    return True
+  if 50 < roll and guess == "high":    
+    return bet
 
-  elif 50 < roll and guess == "low":
-    return True
+  elif 50 > roll and guess == "low":
+    return bet
 
-  return False
+  return -1 * bet
 
-def craps(shooter_outcome: str) -> str:
+def craps(shooter_outcome: str, bet: int) -> int:
   """
   Returns if the player guesses correctly in a simulation of the game Craps
-
-  >>> craps("Win")
-  die1 = 1
-  die2 = 2
-  total = 3
-  "lose"
-  >>> craps("Win")
-  die1 = 4
-  die2 = 3
-  total = 7
-  "win"
-  >>> craps("Lose")
-  die1 = 6
-  die2 = 6
-  total = 12
-  "tie"
   """
   #Variables for the game
   die1 = random.randint(1,6)
@@ -141,19 +159,25 @@ def craps(shooter_outcome: str) -> str:
   #Comeout roll results
   #If the roll is a natural
   if total == 7 or total == 11:
+    print("A natural!")
     if shooter_outcome == "Win":
-      return "Win"
-    return "Lose"
+      print("You guessed right!")
+      return bet 
+    print("You guessed wrong.")
+    return bet * -1
 
   #If the roll is a crap
   elif total <= 3:
+    print("It's a crap!")
     if shooter_outcome == "Win":
-      return "Lose"
-    return "Win"
+      print("You guessed wrong.")
+      return bet * -1
+    print("You guessed right!")
+    return bet
 
   #If the roll is a push 
   elif total == 12:
-    return "Tie"
+    return 0
 
   #If the roll was something other than the rolls above
   point = total
@@ -172,10 +196,14 @@ def craps(shooter_outcome: str) -> str:
 
     if total == 7:
       if shooter_outcome == "Win":
-        return "Lose"
-      return "Win"
+        print("You guessed wrong.")
+        return bet * -1
+      print("You guessed right!")
+      return bet
 
     elif total == point:
       if shooter_outcome == "Win":
-        return "Win"
-      return "Lose"
+        print("You guessed right!")
+        return bet
+      print("You guessed wrong.")
+      return bet * -1

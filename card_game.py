@@ -1,7 +1,7 @@
 import cards 
 import random
 
-def black_jack() -> str:
+def black_jack(bet: int) -> int:
   """
   Simulates a game of blackjack
   """
@@ -67,9 +67,9 @@ def black_jack() -> str:
 
     if dealers_total == 21:
       print("It is a tie!")
-      return "Tie"
+      return 0
     print("You Win!")
-    return "Win"
+    return bet
 
   #Otherwise
   else:
@@ -96,7 +96,7 @@ def black_jack() -> str:
       #User busted
       if users_total > 21:
         print("You are busted")
-        return "Lose"
+        return bet * -1
 
     #Dealer's turn
     print("========================================")
@@ -105,7 +105,7 @@ def black_jack() -> str:
     print(dealers_hand)
     print("Dealer's total: " +  str(dealers_total))
     print()
-
+    
     while dealers_total < 17:
       #Draw card
       dealers_hand.append(cards.draw(deck))
@@ -128,18 +128,18 @@ def black_jack() -> str:
       #If dealer busted
       if dealers_total > 21:
         print("Dealer has busted")
-        return "Win"
+        return bet
 
     print("========================================")
 
     #If dealer and user stayed
     if dealers_total == users_total:
       print("Both hands are equal. It's a tie.")
-      return "Tie"
+      return 0
 
     if dealers_total > users_total:
       print("Dealer has the higher hand. You lose.")
-      return "Lose"
+      return bet * -1
 
     print("You have the higher hand. You win!")
-    return "Win"
+    return bet

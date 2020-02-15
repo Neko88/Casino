@@ -1,0 +1,31 @@
+##############################
+Program Name: Casino
+Program Description:To simulate simple casino games
+Date Created: October 6, 2019
+Date Completed: January 5, 2020
+#############################
+TODO - If I come back to this
+Poker
+UI
+Actual program not just py files
+
+#############################
+Change Log
+October 6, 2019 - Created and completed high_low() and craps() functions
+October 7, 2019 - Created and completed recognize_number() function
+October 9, 2019 - Fixed recognize_number() function to account for test case "10"
+October 11, 2019 - Created and completed deck_of_cards() and draw_card() functions. Started a basic ui and black_jack() function. Organized functions
+October 12, 2019 - Created and completed the skeleton of roulette function(). Worked a little on black_jack() and ui()
+October 13, 2019 - Worked on roulette() function. Created and completed recognize_cardbj()
+October 20, 2019 - Finished black_jack()
+November 2, 2019 - Created a Login/Create Account system with comments
+December 20, 2019 - Reworked games to return int values and finished roulette()
+December 21, 2019 - Recreated Login/Logout system and create account so that it is not on the same screen as the games
+December 24, 2019 - Created delete account, accounted for duplicate usernames when creating accounts, allowed to log into a different account while in ui. Reduced some clutters of code
+December 27, 2019 - Edited login info to allow for new account creation and added parts of when one selects to continue
+December 28, 2019 - Edited the user's bet for continue
+January 1, 2020 - Worked on selctions and worked on roulette table in another program
+January 3, 2020 - Worked on roulette decision
+January 4, 2020 - Finished roulette decision
+January 5, 2020 - Combines the roulette decision and roulette table into this program
+##############################
